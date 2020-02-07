@@ -14,7 +14,7 @@ import com.webtomob.myreceipe.R;
 import com.webtomob.myreceipe.model.Category;
 import com.webtomob.myreceipe.model.Receipe;
 import com.webtomob.myreceipe.view.add_receipe.AddReceipeActivity;
-import com.webtomob.myreceipe.xml_parsing.ReceipeXMLHandler;
+import com.webtomob.myreceipe.xmlparsing.ReceipeXMLHandler;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -68,7 +68,7 @@ public class HomeActivity extends AppCompatActivity {
 
             ArrayList<Receipe> receipeList = myXMLHandler.getReceipeList();
             ArrayList<Category> categoryList = myXMLHandler.getCategoryList();
-            
+
             for(int i=0; i<receipeList.size(); i++) {
                 Log.v("List is CATID ", receipeList.get(i).getCatId());
                 Log.v("List is NAME", receipeList.get(i).getName());

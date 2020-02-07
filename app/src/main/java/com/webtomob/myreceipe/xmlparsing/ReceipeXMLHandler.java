@@ -1,4 +1,4 @@
-package com.webtomob.myreceipe.xml_parsing;
+package com.webtomob.myreceipe.xmlparsing;
 
 import com.webtomob.myreceipe.model.Category;
 import com.webtomob.myreceipe.model.Receipe;
