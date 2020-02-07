@@ -1,4 +1,4 @@
-package com.webtomob.myreceipe.model;
+package com.webtomob.myrecipe.model;
 
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -20,6 +20,12 @@ public class Category {
             this.catId = catId;
             this.cateName = catName;
         }
+
+    @Ignore
+    public Category(String catId, String catName) {
+        this.catId = catId;
+        this.cateName = catName;
+    }
 
     public int getId() {
         return id;

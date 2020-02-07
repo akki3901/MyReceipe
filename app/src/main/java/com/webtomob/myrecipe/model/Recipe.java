@@ -1,28 +1,28 @@
-package com.webtomob.myreceipe.model;
+package com.webtomob.myrecipe.model;
 
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 
-@Entity(tableName = "receipe")
-public class Receipe {
+@Entity(tableName = "recipe")
+public class Recipe {
     @PrimaryKey(autoGenerate = true)
     int id;
-    String catId;
+    String catName;
     String name;
     String imageUrl;
     String steps;
     String ingredient;
     String cookingTime;
 
-    public Receipe() {
+    public Recipe() {
     }
 
     @Ignore
-    public Receipe(int id, String catId, String name, String imageUrl, String steps, String ingredient, String cookingTime) {
+    public Recipe(int id, String catName, String name, String imageUrl, String steps, String ingredient, String cookingTime) {
         this.id = id;
-        this.catId = catId;
+        this.catName = catName;
         this.name = name;
         this.imageUrl = imageUrl;
         this.steps = steps;
@@ -31,8 +31,8 @@ public class Receipe {
     }
 
     @Ignore
-    public Receipe(String catId, String name, String imageUrl, String steps, String ingredient, String cookingTime) {
-        this.catId = catId;
+    public Recipe(String catName, String name, String imageUrl, String steps, String ingredient, String cookingTime) {
+        this.catName = catName;
         this.name = name;
         this.imageUrl = imageUrl;
         this.steps = steps;
@@ -49,12 +49,12 @@ public class Receipe {
         this.id = id;
     }
 
-    public String getCatId() {
-        return catId;
+    public String getCatName() {
+        return catName;
     }
 
-    public void setCatId(String catId) {
-        this.catId = catId;
+    public void setCatName(String catName) {
+        this.catName = catName;
     }
 
     public String getName() {

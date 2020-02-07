@@ -1,4 +1,4 @@
-package com.webtomob.myreceipe.database;
+package com.webtomob.myrecipe.database;
 
 import android.os.Handler;
 import android.os.Looper;

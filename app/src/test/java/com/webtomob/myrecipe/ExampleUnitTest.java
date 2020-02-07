@@ -1,4 +1,4 @@
-package com.webtomob.myreceipe;
+package com.webtomob.myrecipe;
 
 import org.junit.Test;
 

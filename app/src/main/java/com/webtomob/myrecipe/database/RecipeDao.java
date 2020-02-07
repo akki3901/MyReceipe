@@ -1,4 +1,4 @@
-package com.webtomob.myreceipe.database;
+package com.webtomob.myrecipe.database;
 
 
 import androidx.room.Dao;
@@ -7,31 +7,31 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.webtomob.myreceipe.model.Receipe;
+import com.webtomob.myrecipe.model.Recipe;
 
 import java.util.List;
 
 import static androidx.room.OnConflictStrategy.REPLACE;
 
 @Dao
-public interface ReceipeDao {
+public interface RecipeDao {
 
-    @Query("SELECT * FROM RECEIPE ORDER BY ID")
-    List<Receipe> getAllReceipe();
+    @Query("SELECT * FROM RECIPE ORDER BY ID")
+    List<Recipe> getAllReceipe();
 
     @Insert(onConflict = REPLACE)
-    void insertReceipeItem(Receipe receipeItem);
+    void insertRecipeItem(Recipe recipeItem);
 
     @Update
-    void updateReceipeItem(Receipe receipeItem);
+    void updateReceipeItem(Recipe recipeItem);
 
     @Delete
-    void delete(Receipe receipeItem);
+    void delete(Recipe recipeItem);
 
-    @Query("SELECT * FROM RECEIPE WHERE id = :id")
-    Receipe loadReceipeItemById(int id);
+    @Query("SELECT * FROM RECIPE WHERE id = :id")
+    Recipe loadReceipeItemById(int id);
 
-    @Query("DELETE FROM RECEIPE")
+    @Query("DELETE FROM RECIPE")
     void deleteAll();
 
     /*@Query("UPDATE receipe SET status = :status WHERE ticketId = :ticketId")

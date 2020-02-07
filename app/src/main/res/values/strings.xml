@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">MyReceipe</string>
+    <string name="app_name">MyRecipe</string>
     <string name="cat">Select Category</string>
-    <string name="receipe_name">Receipe Name</string>
+    <string name="recipe_name">Recipe Name</string>
     <string name="ingredient">Ingredients</string>
     <string name="cooking_time">Cooking Duration</string>
     <string name="steps">Enter Steps</string>
@@ -12,10 +12,12 @@
     <string name="ingredient_error">Please enter ingredients</string>
     <string name="cooking_time_error">Please enter cooking time</string>
     <string name="steps_error">Please enter steps</string>
-    <string name="add_receipe_title">Add Receipe</string>
+    <string name="add_recipe_title">Add Recipe</string>
+    <string name="recipe_duration_hint">Duration like 20 mins</string>
 
     <string name="discard_changes">Do you want to discard the changes?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="not_saved">Receipe not saved</string>
+    <string name="not_saved">Recipe not saved</string>
+    <string name="save_btn">Save Recipe</string>
 </resources>

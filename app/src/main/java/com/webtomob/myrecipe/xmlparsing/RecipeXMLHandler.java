@@ -1,7 +1,7 @@
-package com.webtomob.myreceipe.xmlparsing;
+package com.webtomob.myrecipe.xmlparsing;
 
-import com.webtomob.myreceipe.model.Category;
-import com.webtomob.myreceipe.model.Receipe;
+import com.webtomob.myrecipe.model.Category;
+import com.webtomob.myrecipe.model.Recipe;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -9,17 +9,17 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import java.util.ArrayList;
 
-public class ReceipeXMLHandler extends DefaultHandler {
+public class RecipeXMLHandler extends DefaultHandler {
     boolean currentElement = false;
     String currentValue = "";
 
-    Receipe receipeData;
-    ArrayList<Receipe> receipeList;
+    Recipe recipeData;
+    ArrayList<Recipe> recipeList;
     Category category;
     ArrayList<Category> categoryList;
 
-    public ArrayList<Receipe> getReceipeList() {
-        return receipeList;
+    public ArrayList<Recipe> getRecipeList() {
+        return recipeList;
     }
 
     public ArrayList<Category> getCategoryList(){
@@ -31,15 +31,15 @@ public class ReceipeXMLHandler extends DefaultHandler {
 
         currentElement = true;
 
-        if (qName.equals("ReceipeTypes")){
-            receipeList = new ArrayList<Receipe>();
+        if (qName.equals("RecipeTypes")){
+            recipeList = new ArrayList<Recipe>();
             categoryList = new ArrayList<Category>();
         }
         else if (qName.equals("Category")) {
             category = new Category();
         }
-        else if (qName.equals("ReceipeData")) {
-            receipeData = new Receipe();
+        else if (qName.equals("RecipeData")) {
+            recipeData = new Recipe();
         }
 
     }
@@ -57,17 +57,17 @@ public class ReceipeXMLHandler extends DefaultHandler {
             categoryList.add(category);
 
         else if (qName.equalsIgnoreCase("CatId"))
-            receipeData.setCatId(currentValue.trim());
+            recipeData.setCatName(currentValue.trim());
         else if (qName.equalsIgnoreCase("Name"))
-            receipeData.setName(currentValue.trim());
+            recipeData.setName(currentValue.trim());
         else if (qName.equalsIgnoreCase("Ingredients"))
-            receipeData.setIngredient(currentValue.trim());
+            recipeData.setIngredient(currentValue.trim());
         else if (qName.equalsIgnoreCase("Duration"))
-            receipeData.setCookingTime(currentValue.trim());
+            recipeData.setCookingTime(currentValue.trim());
         else if (qName.equalsIgnoreCase("Steps"))
-            receipeData.setSteps(currentValue.trim());
-        else if (qName.equalsIgnoreCase("ReceipeData"))
-            receipeList.add(receipeData);
+            recipeData.setSteps(currentValue.trim());
+        else if (qName.equalsIgnoreCase("RecipeData"))
+            recipeList.add(recipeData);
 
         currentValue = "";
     }

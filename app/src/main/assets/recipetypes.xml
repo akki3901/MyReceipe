@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<ReceipeTypes>
+<RecipeTypes>
 
     <Category>
         <Id>1</Id>
@@ -27,96 +27,70 @@
         <CatName>Sweets</CatName>
     </Category>
 
-    <ReceipeData>
+    <RecipeData>
         <CatId>1</CatId>
         <Name>AAAAAA</Name>
         <Ingredients>ingredienst AAA</Ingredients>
         <Duration>10mins</Duration>
         <Steps>Steps AAAAAAA</Steps>
-    </ReceipeData>
+    </RecipeData>
 
-    <ReceipeData>
+    <RecipeData>
         <CatId>2</CatId>
         <Name>BBBBB</Name>
         <Ingredients>ingredients BBBB</Ingredients>
         <Duration>19mins</Duration>
         <Steps>Steps BBBBBB</Steps>
-    </ReceipeData>
+    </RecipeData>
 
 
-    <ReceipeData>
+    <RecipeData>
         <CatId>3</CatId>
         <Name>CCCCCC</Name>
         <Ingredients>ingredients CCCCC</Ingredients>
         <Duration>29mins</Duration>
         <Steps>Steps CCCCCC</Steps>
-    </ReceipeData>
+    </RecipeData>
 
 
-    <ReceipeData>
+    <RecipeData>
         <CatId>4</CatId>
         <Name>DDDDDD</Name>
         <Ingredients>ingredients DDDDDD</Ingredients>
         <Duration>40mins</Duration>
         <Steps>Steps DDDDDD</Steps>
-    </ReceipeData>
+    </RecipeData>
 
-    <ReceipeData>
+    <RecipeData>
         <CatId>5</CatId>
         <Name>EEEEEE</Name>
         <Ingredients>ingredients EEEEEE</Ingredients>
         <Duration>23mins</Duration>
         <Steps>Steps EEEEEE</Steps>
-    </ReceipeData>
+    </RecipeData>
 
-    <ReceipeData>
+    <RecipeData>
         <CatId>2</CatId>
         <Name>BBBBBB 2</Name>
         <Ingredients>ingredients BBBBBB 2</Ingredients>
         <Duration>48mins</Duration>
         <Steps>Steps BBBBB 2</Steps>
-    </ReceipeData>
+    </RecipeData>
 
-    <ReceipeData>
+    <RecipeData>
         <CatId>1</CatId>
         <Name>AAAAA 2</Name>
         <Ingredients>ingredients AAAAAA 2</Ingredients>
         <Duration>94mins</Duration>
         <Steps>Steps AAAAAA 2</Steps>
-    </ReceipeData>
+    </RecipeData>
 
-    <ReceipeData>
+    <RecipeData>
         <CatId>4</CatId>
         <Name>DDDDDD 2</Name>
         <Ingredients>ingredients DDDDDD 2</Ingredients>
         <Duration>46mins</Duration>
         <Steps>Steps DDDDDD 2</Steps>
-    </ReceipeData>
+    </RecipeData>
 
-</ReceipeTypes>
-
-
-<!--
-<PurchaseOrder>
-    <OrderId>5</OrderId>
-    <CustomerId>0275125</CustomerId>
-    <Email>mysamplecode@gmail.com</Email>
-    <OrderItemDetail>
-        <LineNumber>1</LineNumber>
-        <ProductSku>12010109Y</ProductSku>
-        <Quantity>2.00</Quantity>
-        <Price>7.99</Price>
-    </OrderItemDetail>
-    <OrderItemDetail>
-        <LineNumber>2</LineNumber>
-        <ProductSku>12010109B</ProductSku>
-        <Quantity>900</Quantity>
-        <Price>83.50</Price>
-    </OrderItemDetail>
-    <OrderItemDetail>
-        <LineNumber>3</LineNumber>
-        <ProductSku>11271581Y</ProductSku>
-        <Quantity>16.00</Quantity>
-        <Price>8.99</Price>
-    </OrderItemDetail>
-</PurchaseOrder>-->
+</RecipeTypes>

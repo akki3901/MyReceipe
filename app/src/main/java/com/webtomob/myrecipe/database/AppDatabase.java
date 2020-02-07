@@ -1,4 +1,4 @@
-package com.webtomob.myreceipe.database;
+package com.webtomob.myrecipe.database;
 
 
 import android.content.Context;
@@ -9,10 +9,11 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-import com.webtomob.myreceipe.model.Receipe;
+import com.webtomob.myrecipe.model.Category;
+import com.webtomob.myrecipe.model.Recipe;
 
 
-@Database(entities = {Receipe.class}, version = 1, exportSchema = false)
+@Database(entities = {Recipe.class, Category.class}, version = 1, exportSchema = false)
 
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
@@ -35,6 +36,7 @@ public abstract class AppDatabase extends RoomDatabase {
         return sInstance;
     }
 
-    public abstract ReceipeDao receipeDao();
+    public abstract RecipeDao receipeDao();
+    public abstract CategoryDao categoryDao();
 
 }

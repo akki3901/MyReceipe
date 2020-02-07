@@ -1,4 +1,4 @@
-package com.webtomob.myreceipe.view;
+package com.webtomob.myrecipe.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,8 +7,8 @@ import android.os.CountDownTimer;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.webtomob.myreceipe.R;
-import com.webtomob.myreceipe.view.home.HomeActivity;
+import com.webtomob.myrecipe.R;
+import com.webtomob.myrecipe.view.home.HomeActivity;
 
 public class SplashActivity extends AppCompatActivity {
 
