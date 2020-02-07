@@ -10,7 +10,7 @@
         android:theme="@style/AppTheme" >
 
     <activity
-        android:name=".ui.SplashActivity"
+        android:name=".view.SplashActivity"
         android:theme="@style/AppTheme.NoActionBar">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
@@ -18,6 +18,10 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
     </activity>
+
+        <activity android:name=".view.home.HomeActivity"/>
+        <activity android:name=".view.add_receipe.AddReceipeActivity" android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing"/>
 
     </application>
 

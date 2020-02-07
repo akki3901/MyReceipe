@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">MyReceipe</string>
+    <string name="cat">Select Category</string>
+    <string name="receipe_name">Receipe Name</string>
+    <string name="ingredient">Ingredients</string>
+    <string name="cooking_time">Cooking Duration</string>
+    <string name="steps">Enter Steps</string>
+    <string name="image">Photo</string>
+    <string name="steps_hint">Please use enter to start next step like \nPut water in Pan.\nSwitch on Stove</string>
+
+    <string name="name_error">Please enter name</string>
+    <string name="ingredient_error">Please enter ingredients</string>
+    <string name="cooking_time_error">Please enter cooking time</string>
+    <string name="steps_error">Please enter steps</string>
+    <string name="add_receipe_title">Add Receipe</string>
+
+    <string name="discard_changes">Do you want to discard the changes?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="not_saved">Receipe not saved</string>
 </resources>

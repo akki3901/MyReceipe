@@ -13,23 +13,31 @@ public class Receipe {
     String name;
     String imageUrl;
     String steps;
-    String shortDesc;
+    String ingredient;
     String cookingTime;
-    String date;
 
     public Receipe() {
     }
 
     @Ignore
-    public Receipe(int id, String catId, String name, String imageUrl, String steps, String shortDesc, String cookingTime, String date) {
+    public Receipe(int id, String catId, String name, String imageUrl, String steps, String ingredient, String cookingTime) {
         this.id = id;
         this.catId = catId;
         this.name = name;
         this.imageUrl = imageUrl;
         this.steps = steps;
-        this.shortDesc = shortDesc;
+        this.ingredient = ingredient;
         this.cookingTime = cookingTime;
-        this.date = date;
+    }
+
+    @Ignore
+    public Receipe(String catId, String name, String imageUrl, String steps, String ingredient, String cookingTime) {
+        this.catId = catId;
+        this.name = name;
+        this.imageUrl = imageUrl;
+        this.steps = steps;
+        this.ingredient = ingredient;
+        this.cookingTime = cookingTime;
 
     }
 
@@ -73,12 +81,12 @@ public class Receipe {
         this.steps = steps;
     }
 
-    public String getShortDesc() {
-        return shortDesc;
+    public String getIngredient() {
+        return ingredient;
     }
 
-    public void setShortDesc(String shortDesc) {
-        this.shortDesc = shortDesc;
+    public void setIngredient(String ingredient) {
+        this.ingredient = ingredient;
     }
 
     public String getCookingTime() {
@@ -89,11 +97,4 @@ public class Receipe {
         this.cookingTime = cookingTime;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
 }

@@ -1,4 +1,4 @@
-package com.webtomob.myreceipe.ui;
+package com.webtomob.myreceipe.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.webtomob.myreceipe.R;
-import com.webtomob.myreceipe.ui.home.HomeActivity;
+import com.webtomob.myreceipe.view.home.HomeActivity;
 
 public class SplashActivity extends AppCompatActivity {
 
