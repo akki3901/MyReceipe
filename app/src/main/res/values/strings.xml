@@ -13,11 +13,15 @@
     <string name="cooking_time_error">Please enter cooking time</string>
     <string name="steps_error">Please enter steps</string>
     <string name="add_recipe_title">Add Recipe</string>
-    <string name="recipe_duration_hint">Duration like 20 mins</string>
+    <string name="recipe_duration_hint">Duration in minutes</string>
 
-    <string name="discard_changes">Do you want to discard the changes?</string>
+    <string name="discard_changes">Are you sure you want to go back?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="not_saved">Recipe not saved</string>
     <string name="save_btn">Save Recipe</string>
+    <string name="saved_message">Recipe Saved Successfully!!</string>
+    <string name="min">&#160;Minutes</string>
+    <string name="default_cat">All category</string>
+    <string name="home_title">My Recipes</string>
 </resources>

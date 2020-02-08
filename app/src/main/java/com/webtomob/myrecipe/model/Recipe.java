@@ -1,5 +1,6 @@
 package com.webtomob.myrecipe.model;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -9,6 +10,7 @@ import androidx.room.PrimaryKey;
 public class Recipe {
     @PrimaryKey(autoGenerate = true)
     int id;
+    @ColumnInfo(name = "catName")
     String catName;
     String name;
     String imageUrl;

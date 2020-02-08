@@ -28,68 +28,68 @@
     </Category>
 
     <RecipeData>
-        <CatId>1</CatId>
+        <CatId>Breakfast</CatId>
         <Name>AAAAAA</Name>
         <Ingredients>ingredienst AAA</Ingredients>
-        <Duration>10mins</Duration>
+        <Duration>10</Duration>
         <Steps>Steps AAAAAAA</Steps>
     </RecipeData>
 
     <RecipeData>
-        <CatId>2</CatId>
+        <CatId>Lunch</CatId>
         <Name>BBBBB</Name>
         <Ingredients>ingredients BBBB</Ingredients>
-        <Duration>19mins</Duration>
+        <Duration>19</Duration>
         <Steps>Steps BBBBBB</Steps>
     </RecipeData>
 
 
     <RecipeData>
-        <CatId>3</CatId>
+        <CatId>Dinner</CatId>
         <Name>CCCCCC</Name>
         <Ingredients>ingredients CCCCC</Ingredients>
-        <Duration>29mins</Duration>
+        <Duration>29</Duration>
         <Steps>Steps CCCCCC</Steps>
     </RecipeData>
 
 
     <RecipeData>
-        <CatId>4</CatId>
+        <CatId>Snacks</CatId>
         <Name>DDDDDD</Name>
         <Ingredients>ingredients DDDDDD</Ingredients>
-        <Duration>40mins</Duration>
+        <Duration>40</Duration>
         <Steps>Steps DDDDDD</Steps>
     </RecipeData>
 
     <RecipeData>
-        <CatId>5</CatId>
+        <CatId>Sweets</CatId>
         <Name>EEEEEE</Name>
         <Ingredients>ingredients EEEEEE</Ingredients>
-        <Duration>23mins</Duration>
+        <Duration>23</Duration>
         <Steps>Steps EEEEEE</Steps>
     </RecipeData>
 
     <RecipeData>
-        <CatId>2</CatId>
+        <CatId>Lunch</CatId>
         <Name>BBBBBB 2</Name>
         <Ingredients>ingredients BBBBBB 2</Ingredients>
-        <Duration>48mins</Duration>
+        <Duration>48</Duration>
         <Steps>Steps BBBBB 2</Steps>
     </RecipeData>
 
     <RecipeData>
-        <CatId>1</CatId>
+        <CatId>Breakfast</CatId>
         <Name>AAAAA 2</Name>
         <Ingredients>ingredients AAAAAA 2</Ingredients>
-        <Duration>94mins</Duration>
+        <Duration>94</Duration>
         <Steps>Steps AAAAAA 2</Steps>
     </RecipeData>
 
     <RecipeData>
-        <CatId>4</CatId>
+        <CatId>Snacks</CatId>
         <Name>DDDDDD 2</Name>
         <Ingredients>ingredients DDDDDD 2</Ingredients>
-        <Duration>46mins</Duration>
+        <Duration>46</Duration>
         <Steps>Steps DDDDDD 2</Steps>
     </RecipeData>
 

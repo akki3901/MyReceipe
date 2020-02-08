@@ -6,6 +6,7 @@
     <color name="colorBlack">#000000</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorGrey">#BBB7B7</color>
-    <color name="colorBlue">#8BC3D6</color>
+    <color name="colorBlue">#BCD2DA</color>
     <color name="colorBackground">#58595A</color>
+    <color name="colorTransparent">#4A4B4B</color>
 </resources>

@@ -3,12 +3,12 @@ package com.webtomob.myrecipe.view.addrecipe;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,13 +22,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
 import androidx.lifecycle.Observer;
@@ -43,9 +41,11 @@ import com.webtomob.myrecipe.viewmodel.AddRecipeViewModel;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 import java.util.Objects;
 
 
@@ -61,7 +61,7 @@ public class AddRecipeActivity extends AppCompatActivity {
     private static final int PERMISSIONS_REQUEST_STORAGE = 2;
     private static final int PERMISSIONS_REQUEST_CAMERA = 3;
     private Uri imageUriFromCamera;
-    private String image;
+    private String mImagePath = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,14 +91,12 @@ public class AddRecipeActivity extends AppCompatActivity {
         mDuration = findViewById(R.id.durationEditText);
         mSteps = findViewById(R.id.stepsEditText);
         mCatSpinner = findViewById(R.id.catSpinner);
-        //mCatSpinner.setOnItemSelectedListener(catSpinnerListener);
         loadSpinnerData();
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (validationFields()) {
-                    saveReceipe();
-                    recipeViewModel.onClick(view);
+                    saveRecipe();
                 }
             }
         });
@@ -112,6 +110,8 @@ public class AddRecipeActivity extends AppCompatActivity {
         });
 
         handlingScrollingOfEditText();
+        //mImageView.setImageBitmap(BitmapFactory.decodeFile("/data/user/0/com.webtomob.myreceipe/app_imageDir/JPEG_20200208_151935_"));
+        ///data/user/0/com.webtomob.myreceipe/app_imageDir/JPEG_20200208_151935_
 
     }
 
@@ -174,15 +174,19 @@ public class AddRecipeActivity extends AppCompatActivity {
     /**
      * Saving the tickets in database
      */
-    private void saveReceipe() {
+    private void saveRecipe() {
         AppExecutor.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                Recipe recipe = new Recipe("", mName.getText().toString(), "", mSteps.getText().toString(),
+                Recipe recipe = new Recipe(0, mCatSpinner.getSelectedItem().toString(), mName.getText().toString(), mImagePath, mSteps.getText().toString(),
                         mIngredient.getText().toString(), mDuration.getText().toString());
                 mDatabase.receipeDao().insertRecipeItem(recipe);
+
             }
         });
+
+        Toast.makeText(getBaseContext(), getString(R.string.saved_message), Toast.LENGTH_LONG).show();
+        resetFields();
     }
 
     private void loadSpinnerData() {
@@ -205,15 +209,12 @@ public class AddRecipeActivity extends AppCompatActivity {
                 mCatSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                        String label = adapterView.getItemAtPosition(position).toString();
-                        Log.e(" this spinner ", " kjhkjh " + label);
-                        Toast.makeText(adapterView.getContext(), "You selected: " + label, Toast.LENGTH_LONG).show();
+
                     }
 
                     @Override
                     public void onNothingSelected(AdapterView<?> adapterView) {
-                        Log.e(" this spinner ", " kjhkjh ");
-                        Toast.makeText(adapterView.getContext(), "You selected: ", Toast.LENGTH_LONG).show();
+
                     }
                 });
             }
@@ -294,21 +295,21 @@ public class AddRecipeActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         if (intent.resolveActivity(getApplicationContext().getPackageManager()) != null) {
             startActivityForResult(intent, CAPTURE_PHOTO);
-            startCameraActivity();
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) switch (requestCode) {
+        if (resultCode == Activity.RESULT_OK)
+            switch (requestCode) {
             case CAPTURE_PHOTO:
                 Bitmap croppedImgBitmap;
                 if (imageUriFromCamera != null) {
                     try {
                         croppedImgBitmap = MediaStore.Images.Media.getBitmap(Objects.requireNonNull(this).getContentResolver(), imageUriFromCamera);
                         mImageView.setImageBitmap(croppedImgBitmap);
-                        image = Utils.bitMapToString(croppedImgBitmap);
+                        mImagePath = saveImageToFolder(croppedImgBitmap);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
@@ -318,6 +319,36 @@ public class AddRecipeActivity extends AppCompatActivity {
                 break;
 
         }
+    }
+
+    private String saveImageToFolder(Bitmap bitmap){
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File file = new File(directory, imageFileName);
+        if (!file.exists()) {
+            Log.e("path is ", file.toString());
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream(file);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                fos.flush();
+                fos.close();
+            } catch (java.io.IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return file.toString();
+    }
+
+    private void resetFields(){
+        mImageView.setImageDrawable(getDrawable(R.drawable.ic_camera_white_48dp));
+        mName.setText("");
+        mImagePath = "";
+        mIngredient.setText("");
+        mDuration.setText("");
+        mSteps.setText("");
     }
 
     private void alertDialog() {
@@ -339,7 +370,6 @@ public class AddRecipeActivity extends AppCompatActivity {
         alert.setTitle(getString(R.string.not_saved));
         alert.show();
     }
-
 
     @Override
     public void onBackPressed() {

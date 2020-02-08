@@ -5,9 +5,15 @@ import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.webtomob.myrecipe.R;
@@ -36,11 +42,22 @@ public class HomeActivity extends AppCompatActivity {
     private FloatingActionButton mAddFloatingActionButton;
     private AppPreference mPreference;
     private AppDatabase mDatabase;
+    private Spinner mCatSpinner;
+    private RecyclerView mRecipeRecyclerView;
+    private ArrayList<Recipe> mRecipeList = new ArrayList<>();
+    private boolean isRecyclerViewCreated = false;
+    private String mSelectedCat = "";
+    private boolean isSpinnerFirst = false;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_activity);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(getString(R.string.add_recipe_title));
+        setSupportActionBar(toolbar);
+
         mDatabase = AppDatabase.getInstance(this);
         mPreference = AppPreference.getInstance(this);
         setUpUI();
@@ -49,11 +66,21 @@ public class HomeActivity extends AppCompatActivity {
         if(!mPreference.getBoolean(PrefConstant.CAT_SYNC)){
             parseXML();
         }
+        loadSpinnerData();
+    }
 
-        retrieveCategory();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(mSelectedCat.isEmpty()) {
+            getRecipes(getString(R.string.default_cat));
+        }else{
+            getRecipes(mSelectedCat);
+        }
     }
 
     private void setUpUI() {
+        mRecipeRecyclerView = findViewById(R.id.recipeRecyclerView);
         mAddFloatingActionButton = findViewById(R.id.addFloatingActionButton);
         mAddFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +90,9 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         });
+
+        mCatSpinner = findViewById(R.id.catSpinner);
+
     }
 
     private void parseXML() {
@@ -118,42 +148,115 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    private void saveRecipeIntoDB(final String catId, final String name, final String ingredients, final String steps, final String duration){
+    private void saveRecipeIntoDB(final String catName, final String name, final String ingredients, final String steps, final String duration){
         AppExecutor.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                Recipe recipe = new Recipe(0,catId, name, "", steps, ingredients, duration);
+                Recipe recipe = new Recipe(0, catName, name, "", steps, ingredients, duration);
                 mDatabase.receipeDao().insertRecipeItem(recipe);
             }
         });
     }
 
-    private void retrieveCategory(){
+    private void loadSpinnerData() {
+        final ArrayList<String> categories = new ArrayList<>();
+        categories.add(getString(R.string.default_cat));
         AppExecutor.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                Log.e(" Cate Value ", mDatabase.categoryDao().getAllCategory().get(0).getId() + " .... ");
-                Log.e(" Cate Value ", mDatabase.categoryDao().getAllCategory().get(1).getId() + " .... ");
-                Log.e(" Cate Value ", mDatabase.categoryDao().getAllCategory().get(2).getId() + " .... ");
-                Log.e(" Cate Value ", mDatabase.categoryDao().getAllCategory().get(2).getCateName() + " .... ");
-                /*Gson gson = new GsonBuilder().setLenient().create();
-                TypeAdapter<GetTicketNewResponse> ticketResponseTypeAdapter = gson.getAdapter(GetTicketNewResponse.class);
-                try {
-                    GetTicketNewResponse ticketResponse = ticketResponseTypeAdapter.fromJson(mDatabase.ticketDao().getAllTickets().get(0).getJsonValue());
-                    ticketList = ticketResponse.getData();
+                for (int i = 0; i < mDatabase.categoryDao().getAllCategory().size(); i++) {
+                    categories.add(mDatabase.categoryDao().getAllCategory().get(i).getCateName());
+                }
+                // Stuff that updates the UI
+                if (categories != null) {
+                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getApplication(), R.layout.custom_spinner_layout, categories);
 
-                    if(mDatabase.ticketDao().getAllTickets().get(0).getUserName().equals(SessionManager.getInstance(fragment.mContext).getUserEmail())) {
-                        (fragment.getActivity()).runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                // Stuff that updates the UI
-                                preparingTicketRecyclerView();
-                            }
-                        });
+                    dataAdapter.setDropDownViewResource(R.layout.custom_spinner_layout);
+                    mCatSpinner.setAdapter(dataAdapter);
+                    dataAdapter.notifyDataSetChanged();
+                }
+
+                mCatSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                        mSelectedCat = mCatSpinner.getSelectedItem().toString();
+                        Log.e(" Cat name is ", mSelectedCat);
+                        if(isSpinnerFirst) {
+                            getRecipes(mSelectedCat);
+                        }
+                        isSpinnerFirst = true;
                     }
-                } catch (Exception json) {
-                    Log.e("Ticket DB exception ", json.getMessage());
-                }*/
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+            }
+        });
+    }
+
+    private void settingRecyclerView(){
+        HomeAdpater inboxAdapter = new HomeAdpater(this, mRecipeList);
+        mRecipeRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        mRecipeRecyclerView.hasFixedSize();
+        mRecipeRecyclerView.setAdapter(inboxAdapter);
+    }
+
+    private void getRecipes(final String selectedCat){
+        mRecipeList.clear();
+        AppExecutor.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                if(selectedCat.equalsIgnoreCase(getString(R.string.default_cat))) {
+                    for (int i = 0; i < mDatabase.receipeDao().getAllReceipe().size(); i++) {
+                        Recipe recipe = new Recipe();
+                        recipe.setCatName(mDatabase.receipeDao().getAllReceipe().get(i).getCatName());
+                        recipe.setName(mDatabase.receipeDao().getAllReceipe().get(i).getName());
+                        recipe.setCookingTime(mDatabase.receipeDao().getAllReceipe().get(i).getCookingTime());
+                        if (mDatabase.receipeDao().getAllReceipe().get(i).getImageUrl() != null) {
+                            recipe.setImageUrl(mDatabase.receipeDao().getAllReceipe().get(i).getImageUrl());
+                        } else {
+                            recipe.setImageUrl("");
+                        }
+                        recipe.setIngredient(mDatabase.receipeDao().getAllReceipe().get(i).getIngredient());
+                        recipe.setSteps(mDatabase.receipeDao().getAllReceipe().get(i).getSteps());
+                        recipe.setId(mDatabase.receipeDao().getAllReceipe().get(i).getId());
+
+                        mRecipeList.add(recipe);
+                    }
+                }else{
+                    for (int i = 0; i < mDatabase.receipeDao().loadReceipeItemByCatName(selectedCat).size(); i++) {
+                        Recipe recipe = new Recipe();
+                        recipe.setCatName(mDatabase.receipeDao().loadReceipeItemByCatName(selectedCat).get(i).getCatName());
+                        recipe.setName(mDatabase.receipeDao().loadReceipeItemByCatName(selectedCat).get(i).getName());
+                        recipe.setCookingTime(mDatabase.receipeDao().loadReceipeItemByCatName(selectedCat).get(i).getCookingTime());
+                        if (mDatabase.receipeDao().loadReceipeItemByCatName(selectedCat).get(i).getImageUrl() != null) {
+                            recipe.setImageUrl(mDatabase.receipeDao().loadReceipeItemByCatName(selectedCat).get(i).getImageUrl());
+                        } else {
+                            recipe.setImageUrl("");
+                        }
+                        recipe.setIngredient(mDatabase.receipeDao().loadReceipeItemByCatName(selectedCat).get(i).getIngredient());
+                        recipe.setSteps(mDatabase.receipeDao().loadReceipeItemByCatName(selectedCat).get(i).getSteps());
+                        recipe.setId(mDatabase.receipeDao().loadReceipeItemByCatName(selectedCat).get(i).getId());
+
+                        mRecipeList.add(recipe);
+                    }
+                }
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Stuff that updates the UI
+                        if(!isRecyclerViewCreated) {
+                            settingRecyclerView();
+                            isRecyclerViewCreated = true;
+                        }else{
+                            mRecipeRecyclerView.getAdapter().notifyDataSetChanged();
+                        }
+                    }
+                });
             }
         });
     }

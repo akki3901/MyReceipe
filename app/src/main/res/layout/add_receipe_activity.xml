@@ -132,16 +132,16 @@
 
             <EditText
                 android:id="@+id/durationEditText"
+                style="@style/editText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:ems="10"
-                android:inputType="text"
                 android:hint="@string/recipe_duration_hint"
-                app:layout_constraintEnd_toEndOf="@+id/ingredientEditText"
+                android:inputType="numberSigned"
+                app:layout_constraintEnd_toStartOf="@+id/textView2"
                 app:layout_constraintStart_toStartOf="@+id/guideline"
-                app:layout_constraintTop_toBottomOf="@+id/ingredientEditText"
-                style="@style/editText"/>
+                app:layout_constraintTop_toBottomOf="@+id/ingredientEditText" />
 
             <TextView
                 android:id="@+id/stepsTextView"
@@ -158,20 +158,21 @@
 
             <EditText
                 android:id="@+id/stepsEditText"
+                style="@style/editText"
                 android:layout_width="0dp"
                 android:layout_height="200dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/colorBackground"
                 android:ems="10"
                 android:gravity="start|top"
+                android:hint="@string/steps_hint"
                 android:inputType="textMultiLine"
                 android:maxLines="10"
-                android:background="@color/colorBackground"
-                android:hint="@string/steps_hint"
                 android:padding="10dp"
-                app:layout_constraintEnd_toEndOf="@+id/durationEditText"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline"
-                app:layout_constraintTop_toBottomOf="@+id/durationEditText"
-                style="@style/editText"/>
+                app:layout_constraintTop_toBottomOf="@+id/durationEditText" />
 
             <TextView
                 android:id="@+id/imageTextView"
@@ -199,6 +200,17 @@
                 app:layout_constraintStart_toStartOf="@+id/guideline"
                 app:layout_constraintTop_toBottomOf="@+id/stepsEditText"
                 app:srcCompat="@drawable/ic_camera_white_48dp" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="@string/min"
+                style="@style/textView"
+                app:layout_constraintBottom_toBottomOf="@+id/durationEditText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/durationEditText" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

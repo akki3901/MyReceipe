@@ -28,8 +28,8 @@ public interface RecipeDao {
     @Delete
     void delete(Recipe recipeItem);
 
-    @Query("SELECT * FROM RECIPE WHERE id = :id")
-    Recipe loadReceipeItemById(int id);
+    @Query("SELECT * FROM RECIPE WHERE catName = :catName")
+    List<Recipe> loadReceipeItemByCatName(String catName);
 
     @Query("DELETE FROM RECIPE")
     void deleteAll();
