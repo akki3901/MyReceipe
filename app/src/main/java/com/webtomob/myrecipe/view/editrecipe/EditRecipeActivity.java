@@ -1,4 +1,4 @@
-package com.webtomob.myrecipe.view.addrecipe;
+package com.webtomob.myrecipe.view.editrecipe;
 
 import android.Manifest;
 import android.app.Activity;
@@ -9,6 +9,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,11 +34,18 @@ import androidx.core.content.FileProvider;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.webtomob.myrecipe.R;
 import com.webtomob.myrecipe.database.AppDatabase;
 import com.webtomob.myrecipe.database.AppExecutor;
 import com.webtomob.myrecipe.model.Recipe;
 import com.webtomob.myrecipe.utils.Utils;
+import com.webtomob.myrecipe.view.home.HomeActivity;
 import com.webtomob.myrecipe.viewmodel.AddRecipeViewModel;
 
 import java.io.File;
@@ -49,28 +58,34 @@ import java.util.Date;
 import java.util.Objects;
 
 
-public class AddRecipeActivity extends AppCompatActivity {
+public class EditRecipeActivity extends AppCompatActivity {
     private AddRecipeViewModel recipeViewModel;
     private Button mSaveButton;
     private EditText mName, mIngredient, mDuration, mSteps;
     private ImageView mImageView;
     private AppDatabase mDatabase;
     private Spinner mCatSpinner;
+    private Recipe recipeItem;
 
     private static final int CAPTURE_PHOTO = 1;
     private static final int PERMISSIONS_REQUEST_STORAGE = 2;
     private static final int PERMISSIONS_REQUEST_CAMERA = 3;
     private Uri imageUriFromCamera;
     private String mImagePath = "";
+    private int mSpinnerSelectedVal = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_receipe_activity);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(getString(R.string.add_recipe_title));
+        toolbar.setTitle(getString(R.string.edit_recipe_title));
         setSupportActionBar(toolbar);
         mDatabase = AppDatabase.getInstance(getApplicationContext());
+
+        if (getIntent() != null) {
+            recipeItem = Utils.g.fromJson(getIntent().getStringExtra("recipeItem"), Recipe.class);
+        }
 
         setUpUI();
 
@@ -88,7 +103,7 @@ public class AddRecipeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (validationFields()) {
-                    saveRecipe();
+                    updateRecipe();
                 }
             }
         });
@@ -102,8 +117,36 @@ public class AddRecipeActivity extends AppCompatActivity {
         });
 
         handlingScrollingOfEditText();
-        //mImageView.setImageBitmap(BitmapFactory.decodeFile("/data/user/0/com.webtomob.myreceipe/app_imageDir/JPEG_20200208_151935_"));
-        ///data/user/0/com.webtomob.myreceipe/app_imageDir/JPEG_20200208_151935_
+        prefillOldData();
+    }
+
+    private void prefillOldData(){
+        mName.setText(recipeItem.getName());
+        mIngredient.setText(recipeItem.getIngredient());
+        mSteps.setText(recipeItem.getSteps());
+        mDuration.setText(recipeItem.getCookingTime());
+        if(recipeItem.getImageUrl() != null && !recipeItem.getImageUrl().isEmpty()){
+            mImagePath = recipeItem.getImageUrl();
+            Glide.with(this)
+                    .asBitmap()
+                    .load(new File(recipeItem.getImageUrl()))
+                    .format(DecodeFormat.PREFER_RGB_565)
+                    .apply(RequestOptions.skipMemoryCacheOf(true))
+                    .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.RESOURCE))
+                    //  override for old devices with low memory
+                    .apply(RequestOptions.overrideOf(500))
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+                            Drawable drawable = new BitmapDrawable(getResources(), resource);
+                            mImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                            mImageView.setImageDrawable(drawable);
+                        }
+                    });
+        }else{
+            mImageView.setScaleType(ImageView.ScaleType.CENTER);
+            mImageView.setImageDrawable(getDrawable(R.drawable.ic_image_area_white_48dp));
+        }
 
     }
 
@@ -164,21 +207,21 @@ public class AddRecipeActivity extends AppCompatActivity {
     }
 
     /**
-     * Saving the recipe in database
+     * Saving the Recipe in database
      */
-    private void saveRecipe() {
+    private void updateRecipe() {
         AppExecutor.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                Recipe recipe = new Recipe(0, mCatSpinner.getSelectedItem().toString(), mName.getText().toString(), mImagePath, mSteps.getText().toString(),
+                mDatabase.receipeDao().updateRecipeById(recipeItem.getId(), mCatSpinner.getSelectedItem().toString(), mName.getText().toString(), mImagePath, mSteps.getText().toString(),
                         mIngredient.getText().toString(), mDuration.getText().toString());
-                mDatabase.receipeDao().insertRecipeItem(recipe);
 
             }
         });
 
-        Toast.makeText(getBaseContext(), getString(R.string.saved_message), Toast.LENGTH_LONG).show();
-        resetFields();
+        Toast.makeText(getBaseContext(), getString(R.string.edit_success), Toast.LENGTH_LONG).show();
+        startActivity(new Intent(getBaseContext(), HomeActivity.class));
+        finishAffinity();
     }
 
     private void loadSpinnerData() {
@@ -187,6 +230,9 @@ public class AddRecipeActivity extends AppCompatActivity {
             @Override
             public void run() {
                 for (int i = 0; i < mDatabase.categoryDao().getAllCategory().size(); i++) {
+                    if(mDatabase.categoryDao().getAllCategory().get(i).getCateName().equalsIgnoreCase(recipeItem.getCatName())){
+                        mSpinnerSelectedVal = i;
+                    }
                     categories.add(mDatabase.categoryDao().getAllCategory().get(i).getCateName());
                 }
                 // Stuff that updates the UI
@@ -201,7 +247,7 @@ public class AddRecipeActivity extends AppCompatActivity {
                 mCatSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-
+                        mCatSpinner.setSelection(mSpinnerSelectedVal);
                     }
 
                     @Override
@@ -215,7 +261,7 @@ public class AddRecipeActivity extends AppCompatActivity {
 
     private void cameraPermission() {
         int hasAccounts;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             hasAccounts = checkSelfPermission(Manifest.permission.CAMERA);
 
             if (hasAccounts != PackageManager.PERMISSION_GRANTED) {
@@ -238,7 +284,7 @@ public class AddRecipeActivity extends AppCompatActivity {
 
     private void storagePermission() {
         int hasAccounts;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             hasAccounts = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if (hasAccounts != PackageManager.PERMISSION_GRANTED) {
                 if (!shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
@@ -327,20 +373,11 @@ public class AddRecipeActivity extends AppCompatActivity {
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
                 fos.flush();
                 fos.close();
-            } catch (java.io.IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         return file.toString();
-    }
-
-    private void resetFields(){
-        mImageView.setImageDrawable(getDrawable(R.drawable.ic_camera_white_48dp));
-        mName.setText("");
-        mImagePath = "";
-        mIngredient.setText("");
-        mDuration.setText("");
-        mSteps.setText("");
     }
 
     private void alertDialog() {
@@ -350,7 +387,8 @@ public class AddRecipeActivity extends AppCompatActivity {
                 .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
-                        finish();
+                        startActivity(new Intent(getBaseContext(), HomeActivity.class));
+                        finishAffinity();
                     }
                 })
                 .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {

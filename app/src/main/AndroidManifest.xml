@@ -46,11 +46,14 @@
         <activity
             android:name="com.webtomob.myrecipe.view.addrecipe.AddRecipeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name="com.webtomob.myrecipe.view.detail.DetailActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="com.webtomob.myrecipe.view.editrecipe.EditRecipeActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing"/>
 
     </application>
 

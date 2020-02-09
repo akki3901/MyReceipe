@@ -2,6 +2,7 @@ package com.webtomob.myrecipe.view.detail;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -27,6 +28,7 @@ import com.webtomob.myrecipe.database.AppDatabase;
 import com.webtomob.myrecipe.database.AppExecutor;
 import com.webtomob.myrecipe.model.Recipe;
 import com.webtomob.myrecipe.utils.Utils;
+import com.webtomob.myrecipe.view.editrecipe.EditRecipeActivity;
 
 import java.io.File;
 
@@ -71,6 +73,17 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 deleteAlertDialog(recipeItem.getId());
+            }
+        });
+
+        mEditBtn = findViewById(R.id.editBtn);
+        mEditBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(getBaseContext(), EditRecipeActivity.class);
+                in.putExtra("recipeItem", Utils.g.toJson(recipeItem, Recipe.class));
+                startActivity(in);
+                finishAffinity();
             }
         });
 
@@ -125,7 +138,7 @@ public class DetailActivity extends AppCompatActivity {
                     }
                 });
         AlertDialog alert = builder.create();
-        alert.setTitle(getString(R.string.not_saved));
+        alert.setTitle(getString(R.string.delete_title));
         alert.show();
     }
 

@@ -26,12 +26,14 @@
         <View
             android:id="@+id/view"
             android:layout_width="wrap_content"
-            android:layout_height="70dp"
-            android:alpha="0.5"
+            android:layout_height="75dp"
+            android:alpha="0.7"
             android:background="@color/colorTransparent"
             app:layout_constraintBottom_toBottomOf="@+id/recipeImageView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/recipeImageView"
+            app:layout_constraintVertical_bias="1.0" />
 
         <TextView
             android:id="@+id/nameTextView"
@@ -42,7 +44,8 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
-            android:text="TextView"
+            android:maxLines="2"
+            android:ellipsize="end"
             app:layout_constraintBottom_toTopOf="@+id/ingredientTextView"
             app:layout_constraintEnd_toStartOf="@+id/durationTextView"
             app:layout_constraintStart_toStartOf="parent"
@@ -54,20 +57,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:text="TextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/nameTextView" />
 
         <TextView
             android:id="@+id/ingredientTextView"
-            style="@style/textViewWhite"
+            style="@style/textViewWhite12"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
             android:maxLines="2"
-            android:text="TextView "
+            android:ellipsize="end"
             app:layout_constraintTop_toBottomOf="@+id/nameTextView"
             app:layout_constraintBottom_toBottomOf="@+id/recipeImageView"
             app:layout_constraintEnd_toEndOf="parent"
