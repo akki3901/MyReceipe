@@ -35,7 +35,7 @@
 
         <TextView
             android:id="@+id/nameTextView"
-            style="@style/textView"
+            style="@style/textViewWhite"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -50,7 +50,7 @@
 
         <TextView
             android:id="@+id/durationTextView"
-            style="@style/textView"
+            style="@style/textViewWhite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -60,7 +60,7 @@
 
         <TextView
             android:id="@+id/ingredientTextView"
-            style="@style/textView"
+            style="@style/textViewWhite"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"

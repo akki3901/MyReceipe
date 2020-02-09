@@ -17,6 +17,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 
 }
 
@@ -44,6 +48,14 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+    // Rx java dependency
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.8' // please add current version of dependencies.
+// Rx Android dependency
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+// Rx java adapter version
+    implementation 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
+    implementation 'com.jakewharton.rxbinding3:rxbinding-material:3.1.0'
 
 
 }

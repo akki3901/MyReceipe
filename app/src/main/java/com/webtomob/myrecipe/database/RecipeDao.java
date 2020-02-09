@@ -16,7 +16,7 @@ import static androidx.room.OnConflictStrategy.REPLACE;
 @Dao
 public interface RecipeDao {
 
-    @Query("SELECT * FROM RECIPE ORDER BY ID")
+    @Query("SELECT * FROM RECIPE ORDER BY ID DESC")
     List<Recipe> getAllReceipe();
 
     @Insert(onConflict = REPLACE)
@@ -28,7 +28,7 @@ public interface RecipeDao {
     @Delete
     void delete(Recipe recipeItem);
 
-    @Query("SELECT * FROM RECIPE WHERE catName = :catName")
+    @Query("SELECT * FROM RECIPE WHERE catName = :catName ORDER BY ID DESC")
     List<Recipe> loadReceipeItemByCatName(String catName);
 
     @Query("DELETE FROM RECIPE")

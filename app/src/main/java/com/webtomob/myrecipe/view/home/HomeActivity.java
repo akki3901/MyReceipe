@@ -38,6 +38,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import io.reactivex.disposables.Disposable;
+
 public class HomeActivity extends AppCompatActivity {
     private FloatingActionButton mAddFloatingActionButton;
     private AppPreference mPreference;
@@ -55,7 +57,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_activity);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(getString(R.string.add_recipe_title));
+        toolbar.setTitle(getString(R.string.home_title));
         setSupportActionBar(toolbar);
 
         mDatabase = AppDatabase.getInstance(this);
@@ -197,10 +199,16 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void settingRecyclerView(){
-        HomeAdpater inboxAdapter = new HomeAdpater(this, mRecipeList);
+        HomeAdpater homeAdapter = new HomeAdpater(this, mRecipeList);
         mRecipeRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mRecipeRecyclerView.hasFixedSize();
-        mRecipeRecyclerView.setAdapter(inboxAdapter);
+        mRecipeRecyclerView.setAdapter(homeAdapter);
+
+        //Recyclerview On Item click listerner using Rxjava
+        homeAdapter.getViewClickedObservable()
+                .subscribe(view -> {
+                    Log.v(" this is click ", view.getName()  + " " + view.getId());
+                });
     }
 
     private void getRecipes(final String selectedCat){

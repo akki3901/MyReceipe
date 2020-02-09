@@ -22,6 +22,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.jakewharton.rxbinding3.view.RxView;
 import com.squareup.picasso.Picasso;
 import com.webtomob.myrecipe.R;
 import com.webtomob.myrecipe.model.Recipe;
@@ -30,7 +31,13 @@ import com.webtomob.myrecipe.utils.Utils;
 import java.io.File;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.ReplaySubject;
+
 public class HomeAdpater extends RecyclerView.Adapter {
+    private PublishSubject<Recipe> mViewClickSubject = PublishSubject.create();
 
     List<Recipe> recipeList;
     private Context context;
@@ -38,6 +45,10 @@ public class HomeAdpater extends RecyclerView.Adapter {
     public HomeAdpater(Context context, List<Recipe> recipeList) {
         this.context = context;
         this.recipeList = recipeList;
+    }
+
+    public Observable<Recipe> getViewClickedObservable() {
+        return mViewClickSubject;
     }
 
     @Override
@@ -52,6 +63,11 @@ public class HomeAdpater extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final NewsItem item = (NewsItem) holder;
         final Recipe recipe = recipeList.get(position);
+
+        //Rvjava for the item click
+        RxView.clicks(holder.itemView)
+                .map(aVoid -> recipe)
+                .subscribe(mViewClickSubject);
 
         item.mNameTextView.setText(recipe.getName());
         item.mDurationTextView.setText(recipe.getCookingTime() + context.getString(R.string.min));
@@ -80,7 +96,6 @@ public class HomeAdpater extends RecyclerView.Adapter {
             item.mRecipeImageView.setImageDrawable(context.getDrawable(R.drawable.ic_image_area_white_48dp));
         }
 
-        Log.e("THIS IS ", recipe.getCatName() + " .. name .. " + recipe.getName());
 
     }
 
@@ -101,5 +116,10 @@ public class HomeAdpater extends RecyclerView.Adapter {
             this.mRecipeImageView = v.findViewById(R.id.recipeImageView);
 
         }
+    }
+
+    @Override
+    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
+        mViewClickSubject.onComplete(); //here we avoid memory leaks
     }
 }
