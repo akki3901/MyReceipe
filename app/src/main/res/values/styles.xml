@@ -26,6 +26,11 @@
 
     </style>
 
+    <style name="textViewWhite12">
+        <item name="android:textSize">12dp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
 
     <style name="editText">
         <item name="android:textSize">14dp</item>

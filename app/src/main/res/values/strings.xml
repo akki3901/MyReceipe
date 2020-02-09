@@ -24,4 +24,9 @@
     <string name="min">&#160;Minutes</string>
     <string name="default_cat">All category</string>
     <string name="home_title">My Recipes</string>
+    <string name="delete_btn">Delete Recipe</string>
+    <string name="edit_btn">Edit Recipe</string>
+    <string name="delete_confirmation">Are you sure you want to delete this recipe?</string>
+    <string name="delete_success">Recipe deleted successfully!</string>
+
 </resources>

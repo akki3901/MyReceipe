@@ -23,7 +23,9 @@ import com.webtomob.myrecipe.model.Category;
 import com.webtomob.myrecipe.model.Recipe;
 import com.webtomob.myrecipe.utils.AppPreference;
 import com.webtomob.myrecipe.utils.PrefConstant;
+import com.webtomob.myrecipe.utils.Utils;
 import com.webtomob.myrecipe.view.addrecipe.AddRecipeActivity;
+import com.webtomob.myrecipe.view.detail.DetailActivity;
 import com.webtomob.myrecipe.xmlparsing.RecipeXMLHandler;
 
 import org.xml.sax.InputSource;
@@ -64,7 +66,6 @@ public class HomeActivity extends AppCompatActivity {
         mPreference = AppPreference.getInstance(this);
         setUpUI();
 
-        Log.e("SYNC STATUS ", mPreference.getBoolean(PrefConstant.CAT_SYNC) + " .. ");
         if(!mPreference.getBoolean(PrefConstant.CAT_SYNC)){
             parseXML();
         }
@@ -114,12 +115,6 @@ public class HomeActivity extends AppCompatActivity {
             ArrayList<Category> categoryList = myXMLHandler.getCategoryList();
 
             for(int i = 0; i< recipeList.size(); i++) {
-                Log.v("List is CATID ", recipeList.get(i).getCatName());
-                Log.v("List is NAME", recipeList.get(i).getName());
-                Log.v("List is INGREDIENTS", recipeList.get(i).getIngredient());
-                Log.v("List is STEPS", recipeList.get(i).getSteps());
-                Log.v("List is DURATION", recipeList.get(i).getCookingTime());
-
                 saveRecipeIntoDB(recipeList.get(i).getCatName(), recipeList.get(i).getName(), recipeList.get(i).getIngredient(),
                         recipeList.get(i).getSteps(), recipeList.get(i).getCookingTime());
             }
@@ -206,8 +201,10 @@ public class HomeActivity extends AppCompatActivity {
 
         //Recyclerview On Item click listerner using Rxjava
         homeAdapter.getViewClickedObservable()
-                .subscribe(view -> {
-                    Log.v(" this is click ", view.getName()  + " " + view.getId());
+                .subscribe(recipeSelectedItem -> {
+                    Intent in = new Intent(this, DetailActivity.class);
+                    in.putExtra("recipeItem", Utils.g.toJson(recipeSelectedItem, Recipe.class));
+                    startActivity(in);
                 });
     }
 

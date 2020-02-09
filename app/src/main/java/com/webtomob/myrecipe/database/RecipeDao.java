@@ -31,8 +31,8 @@ public interface RecipeDao {
     @Query("SELECT * FROM RECIPE WHERE catName = :catName ORDER BY ID DESC")
     List<Recipe> loadReceipeItemByCatName(String catName);
 
-    @Query("DELETE FROM RECIPE")
-    void deleteAll();
+    @Query("DELETE FROM RECIPE WHERE id = :id")
+    void deleteRecipeById(int id);
 
     /*@Query("UPDATE receipe SET status = :status WHERE ticketId = :ticketId")
     int updateTicketStatus(String ticketId, String status);*/

@@ -14,6 +14,8 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
 
+import com.google.gson.Gson;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +25,7 @@ import java.util.Locale;
 
 public class Utils {
     public static String mCurrentPhotoPath;
+    public static Gson g = new Gson();
 
     public static File getOutputMediaFile(Activity activity) {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.ENGLISH).format(new Date());
